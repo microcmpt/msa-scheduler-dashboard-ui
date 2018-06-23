@@ -13,8 +13,11 @@
         <img src="images/quartz.jpg" height="60" width="90">
         <img src="images/logo.png">
     </div>
-    <br/><br/>
-
+    <br/>
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#jobModal">新增</button>
+    </div>
+    <br/>
     <div class="table-responsive">
         <table class="table">
             <thead>
@@ -36,6 +39,32 @@
         </ul>
     </div>
 </div>
+
+<div class="modal fade" id="jobModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                    <label>任务</label>
+                    <input type="text" class="form-control">
+                    <label>任务组</label>
+                    <input type="text" class="form-control">
+                    <label>触发器</label>
+                    <input type="text" class="form-control">
+                    <label>触发器组</label>
+                    <input type="text" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 
 <script type="text/javascript">
@@ -55,7 +84,7 @@
                             "        <td>" +
                             "                    <div>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\">删除</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\">修改</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#jobModal\">修改</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\">暂停</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\">恢复</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\">立即启动</button>\n" +
