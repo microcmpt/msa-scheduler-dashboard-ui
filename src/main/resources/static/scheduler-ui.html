@@ -63,7 +63,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.post("http://localhost:8080/scheduler-ui.html", function (data) {
+        $.get("http://localhost:8080/scheduler-ui.html", function (data) {
             alert("Data Loaded: " + data);
         });
     });
