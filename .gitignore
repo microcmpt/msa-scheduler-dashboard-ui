@@ -9,6 +9,7 @@ target/
 # gradle ignore
 .gradle
 build/
+out/
 
 # eclipse ignore
 .settings/
