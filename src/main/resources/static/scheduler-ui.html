@@ -8,7 +8,11 @@
 </head>
 <body>
 <div class="container"><br/>
-    <img src="logo.png">
+    <div>
+        <img src="images/spring-boot.jpg" height="60" width="60">
+        <img src="images/quartz.jpg" height="60" width="90">
+        <img src="images/logo.png">
+    </div>
     <br/><br/>
 
     <div class="table-responsive">
@@ -23,23 +27,9 @@
             </thead>
             <tbody class="table-striped">
             <tr>
-                <td>Job1</td>
+                <td id="jobName">Job1</td>
                 <td>http://localhost:8080</td>
                 <td>5</td>
-                <td>
-                    <div>
-                        <button type="button" class="btn btn-primary">删除</button>
-                        <button type="button" class="btn btn-primary">修改</button>
-                        <button type="button" class="btn btn-primary">暂停</button>
-                        <button type="button" class="btn btn-primary">恢复</button>
-                        <button type="button" class="btn btn-primary">立即启动</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Job2</td>
-                <td>http://localhost:8081</td>
-                <td>6</td>
                 <td>
                     <div>
                         <button type="button" class="btn btn-primary">删除</button>
@@ -63,9 +53,17 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.get("http://localhost:8080/scheduler-ui.html", function (data) {
-            alert("Data Loaded: " + data);
-        });
+        $.ajax({
+            type: "get",
+            url: "http://localhost:8081/api/v1/jobs",
+            dataType: "json",
+            success: function (data) {
+                alert(data)
+            },
+            error: function () {
+                alert('系统异常')
+            }
+        })
     });
 </script>
 </html>
