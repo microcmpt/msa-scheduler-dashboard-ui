@@ -8,15 +8,13 @@
 </head>
 <body>
 <div class="container"><br/>
-    <div class="alert alert-success">
-        <!--        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>-->
-        <strong>任务调度中心控制台</strong>
-    </div>
+    <img src="logo.png">
+    <br/><br/>
 
     <div class="table-responsive">
         <table class="table">
             <thead>
-            <tr class="active">
+            <tr class="success">
                 <th>Job</th>
                 <th>URL</th>
                 <th>优先级</th>
@@ -64,8 +62,8 @@
 </body>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        $.post("http://localhost:8080/scheduler-ui.html", function(data){
+    $(document).ready(function () {
+        $.post("http://localhost:8080/scheduler-ui.html", function (data) {
             alert("Data Loaded: " + data);
         });
     });
