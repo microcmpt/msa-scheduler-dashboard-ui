@@ -19,27 +19,14 @@
         <table class="table">
             <thead>
             <tr class="success">
-                <th>Job</th>
+                <th>任务</th>
+                <th>任务组</th>
                 <th>URL</th>
                 <th>优先级</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody class="table-striped">
-            <tr>
-                <td id="jobName">Job1</td>
-                <td>http://localhost:8080</td>
-                <td>5</td>
-                <td>
-                    <div>
-                        <button type="button" class="btn btn-primary">删除</button>
-                        <button type="button" class="btn btn-primary">修改</button>
-                        <button type="button" class="btn btn-primary">暂停</button>
-                        <button type="button" class="btn btn-primary">恢复</button>
-                        <button type="button" class="btn btn-primary">立即启动</button>
-                    </div>
-                </td>
-            </tr>
             </tbody>
         </table>
 
@@ -58,7 +45,26 @@
             url: "http://localhost:8080/api/v1/jobs",
             dataType: "json",
             success: function (data) {
-                alert(data.status)
+                var item;
+                $.each(data.jobs, function (i, result) {
+                        item = "<tr>" +
+                            "        <td>" + result['jobName'] + "</td>" +
+                            "        <td>" + result['jobGroupName'] + "</td>" +
+                            "        <td>" + result['url'] + "</td>" +
+                            "        <td>" + result['priority'] + "</td>" +
+                            "        <td>" +
+                            "                    <div>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\">删除</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\">修改</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\">暂停</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\">恢复</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\">立即启动</button>\n" +
+                            "                    </div>\n" +
+                            "        </td>" +
+                            " </tr>";
+                        $('.table-striped').append(item);
+                    }
+                );
             },
             error: function () {
                 alert('系统异常')

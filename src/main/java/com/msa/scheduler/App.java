@@ -39,12 +39,14 @@ public class App {
         List<ScheduleJobModule> data = new ArrayList<>();
         ScheduleJobModule scheduleJobModule0 = new ScheduleJobModule();
         scheduleJobModule0.setJobName("job1");
+        scheduleJobModule0.setJobGroupName("任务组1");
         scheduleJobModule0.setUrl("http://localhost:8080");
         scheduleJobModule0.setPriority(5);
         data.add(scheduleJobModule0);
 
         ScheduleJobModule scheduleJobModule1 = new ScheduleJobModule();
         scheduleJobModule1.setJobName("job1");
+        scheduleJobModule1.setJobGroupName("任务组2");
         scheduleJobModule1.setUrl("http://localhost:8081");
         scheduleJobModule1.setPriority(5);
         data.add(scheduleJobModule1);
