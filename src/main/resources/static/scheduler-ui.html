@@ -47,7 +47,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">新增</h4>
             </div>
-            <div class="modal-body">
+            <form role="form">
+                <div class="modal-body">
                     <label>任务</label>
                     <input type="text" class="form-control">
                     <label>任务组</label>
@@ -56,11 +57,12 @@
                     <input type="text" class="form-control">
                     <label>触发器组</label>
                     <input type="text" class="form-control">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">保存</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -83,7 +85,7 @@
                             "        <td>" + result['priority'] + "</td>" +
                             "        <td>" +
                             "                    <div>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\">删除</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='delJob()'>删除</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#jobModal\">修改</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\">暂停</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\">恢复</button>\n" +
@@ -100,5 +102,28 @@
             }
         })
     });
+
+    /*删除任务*/
+    function delJob() {
+            Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+            if (!e) {
+                return;
+            }
+            $.ajax({
+                type: "post",
+                url: "/api/DepartmentApi/Delete",
+                data: {"": JSON.stringify(arrselections)},
+                success: function (data, status) {
+                    if (status == "ok") {
+                        toastr.success('已删除！');
+                        $('.table').bootstrapTable('refresh');
+                    }
+                },
+                error: function () {
+                    toastr.error('Error');
+                }
+            });
+        });
+    }
 </script>
 </html>
