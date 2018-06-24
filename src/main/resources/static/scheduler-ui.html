@@ -59,7 +59,7 @@
                     <input type="text" class="form-control">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-primary" onclick="addJob()">保存</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
@@ -103,26 +103,23 @@
         })
     });
 
-    /*删除任务*/
-    function delJob() {
-            Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
-            if (!e) {
-                return;
-            }
-            $.ajax({
-                type: "post",
-                url: "/api/DepartmentApi/Delete",
-                data: {"": JSON.stringify(arrselections)},
-                success: function (data, status) {
-                    if (status == "ok") {
-                        toastr.success('已删除！');
-                        $('.table').bootstrapTable('refresh');
-                    }
-                },
-                error: function () {
-                    toastr.error('Error');
+    /*添加job*/
+    function addJob() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/users/login",
+            data: $('form').serialize(),
+            success: function (result) {
+                console.log(result);
+                if (result.status == 'ok') {
+                    alert("SUCCESS");
                 }
-            });
+                ;
+            },
+            error: function () {
+                alert("系统异常！");
+            }
         });
     }
 </script>
