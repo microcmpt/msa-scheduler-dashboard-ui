@@ -98,6 +98,27 @@
     </div>
 </div>
 
+<!--消息提示框-->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="messageLabel">提示</h4>
+            </div>
+            <div class="modal-body">确认删除这条Job记录？</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" onclick="delJob()">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--隐藏job,jobGroup-->
+<input id="job" type="hidden"/>
+<input id="jobGroup" type="hidden"/>
+
 </body>
 
 <script type="text/javascript">
@@ -119,8 +140,8 @@
                             "        <td>" + result['jobDescription'] + "</td>" +
                             "        <td>" +
                             "                    <div>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#jobModal\">修改</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"delJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">删除</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#jobModal\">修改</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"delConfirm('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">删除</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"pauseJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">暂停</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"resumeJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">恢复</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"startJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">立即启动</button>\n" +
@@ -155,8 +176,17 @@
         });
     }
 
+    /*删除确认*/
+    function delConfirm(job, jobGroup) {
+        $('#job').val(job);
+        $('#jobGroup').val(jobGroup);
+        $('#messageModal').modal();
+    }
+
     /*删除job*/
-    function delJob(job, jobGroup) {
+    function delJob() {
+        var job = $('#job').val();
+        var jobGroup = $('#jobGroup').val();
         $.ajax({
             type: "DELETE",
             dataType: "json",
@@ -164,10 +194,14 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
-                alert(result.message);
+                $('#messageModal').on('hide.bs.modal', function () {
+                    alert(result.message);
+                });
             },
             error: function () {
-                alert("系统异常！");
+                $('#messageModal').on('hide.bs.modal', function () {
+                    alert("系统异常！");
+                });
             }
         });
     }
