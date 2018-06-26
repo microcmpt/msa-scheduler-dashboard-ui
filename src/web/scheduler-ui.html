@@ -173,6 +173,9 @@
                 console.log(result);
                 $('#jobModal').modal('hide');
                 alert(result.message);
+                if (result.status == "ok") {
+                    location.reload();
+                }
             },
             error: function () {
                 $('#jobModal').modal('hide');
@@ -201,6 +204,9 @@
                 console.log(result);
                 $('#messageModal').modal('hide');
                 alert(result.message);
+                if (result.status == "ok") {
+                    location.reload();
+                }
             },
             error: function () {
                 $('#messageModal').modal('hide');
@@ -219,6 +225,9 @@
             success: function (result) {
                 console.log(result);
                 alert(result.message);
+                if (result.status == "ok") {
+                    location.reload();
+                }
             },
             error: function () {
                 alert("系统异常！");
@@ -236,6 +245,9 @@
             success: function (result) {
                 console.log(result);
                 alert(result.message);
+                if (result.status == "ok") {
+                    location.reload();
+                }
             },
             error: function () {
                 alert("系统异常！");
