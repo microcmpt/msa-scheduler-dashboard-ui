@@ -119,11 +119,11 @@
                             "        <td>" + result['jobDescription'] + "</td>" +
                             "        <td>" +
                             "                    <div>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='delJob()'>删除</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#jobModal\">修改</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\">暂停</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\">恢复</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\">立即启动</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='delJob()'>删除</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='pauseJob()'>暂停</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='resumeJob()'>恢复</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='startJob()'>立即启动</button>\n" +
                             "                    </div>\n" +
                             "        </td>" +
                             " </tr>";
@@ -155,6 +155,75 @@
         });
     }
 
+    /*删除job*/
+    function delJob() {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: "/api/v1/delete/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                alert(result.message);
+            },
+            error: function () {
+                alert("系统异常！");
+            }
+        });
+    }
+
+    /*暂停job*/
+    function pauseJob() {
+        $.ajax({
+            type: "PUT",
+            dataType: "json",
+            url: "/api/v1/pause/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                alert(result.message);
+            },
+            error: function () {
+                alert("系统异常！");
+            }
+        });
+    }
+
+    /*恢复job*/
+    function resumeJob() {
+        $.ajax({
+            type: "PUT",
+            dataType: "json",
+            url: "/api/v1/resume/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                alert(result.message);
+            },
+            error: function () {
+                alert("系统异常！");
+            }
+        });
+    }
+
+    /*立即启动job*/
+    function startJob() {
+        $.ajax({
+            type: "PUT",
+            dataType: "json",
+            url: "/api/v1/start/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                alert(result.message);
+            },
+            error: function () {
+                alert("系统异常！");
+            }
+        });
+    }
+
+    /*获取json*/
     function jobJson() {
         var json = {
             "jobName": $("#jobName").val(),
