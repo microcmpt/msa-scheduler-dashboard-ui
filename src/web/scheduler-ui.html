@@ -99,7 +99,8 @@
 </div>
 
 <!--消息提示框-->
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+     data-dismiss="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -168,9 +169,11 @@
             data: JSON.stringify(jobJson()),
             success: function (result) {
                 console.log(result);
-                alert(result.message)
+                $('#jobModal').modal('hide');
+                alert(result.message);
             },
             error: function () {
+                $('#jobModal').modal('hide');
                 alert("系统异常！");
             }
         });
@@ -194,14 +197,12 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
-                $('#messageModal').on('hide.bs.modal', function () {
-                    alert(result.message);
-                });
+                $('#messageModal').modal('hide');
+                alert(result.message);
             },
             error: function () {
-                $('#messageModal').on('hide.bs.modal', function () {
-                    alert("系统异常！");
-                });
+                $('#messageModal').modal('hide');
+                alert("系统异常！");
             }
         });
     }
