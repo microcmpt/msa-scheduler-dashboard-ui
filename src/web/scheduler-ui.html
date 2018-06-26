@@ -120,10 +120,10 @@
                             "        <td>" +
                             "                    <div>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\"  data-toggle=\"modal\" data-target=\"#jobModal\">修改</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='delJob()'>删除</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='pauseJob()'>暂停</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='resumeJob()'>恢复</button>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick='startJob()'>立即启动</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"delJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">删除</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"pauseJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">暂停</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"resumeJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">恢复</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"startJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">立即启动</button>\n" +
                             "                    </div>\n" +
                             "        </td>" +
                             " </tr>";
@@ -156,11 +156,11 @@
     }
 
     /*删除job*/
-    function delJob() {
+    function delJob(job, jobGroup) {
         $.ajax({
             type: "DELETE",
             dataType: "json",
-            url: "/api/v1/delete/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            url: "/api/v1/delete/job/" + job + "/group/" + jobGroup,
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
@@ -173,11 +173,11 @@
     }
 
     /*暂停job*/
-    function pauseJob() {
+    function pauseJob(job, jobGroup) {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: "/api/v1/pause/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            url: "/api/v1/pause/job/" + job + "/group/" + jobGroup,
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
@@ -190,11 +190,11 @@
     }
 
     /*恢复job*/
-    function resumeJob() {
+    function resumeJob(job, jobGroup) {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: "/api/v1/resume/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            url: "/api/v1/resume/job/" + job + "/group/" + jobGroup,
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
@@ -207,11 +207,11 @@
     }
 
     /*立即启动job*/
-    function startJob() {
+    function startJob(job, jobGroup) {
         $.ajax({
             type: "PUT",
             dataType: "json",
-            url: "/api/v1/start/job/" + $("#jobName").val() + "/group/" + $("#jobGroupName").val(),
+            url: "/api/v1/start/job/" + job + "/group/" + jobGroup,
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
