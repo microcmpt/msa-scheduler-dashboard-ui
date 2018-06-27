@@ -15,7 +15,7 @@
     </div>
     <br/>
     <div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#jobModal">新增</button>
+        <button type="button" class="btn btn-primary" onclick="showJobModal()">新增</button>
     </div>
     <br/>
     <div class="table-responsive">
@@ -60,7 +60,7 @@
                     <input id="jobGroupName" type="text" class="form-control">
                     <label id="triggerNameLabel">触发器:</label>
                     <input id="triggerName" type="text" class="form-control">
-                    <label>触发器组:</label>
+                    <label id="triggerGroupNameLabel">触发器组:</label>
                     <input id="triggerGroupName" type="text" class="form-control">
                     <label>执行频率:</label>
                     <input id="cron" type="text" class="form-control">
@@ -80,7 +80,7 @@
                     </select><br/>
                     <label>错失重发策略:</label>
                     <select id="misfire" class="selectpicker">
-                            <option value="-1">以错过的第一个频率时间立刻开始执行</option>
+                        <option value="-1">以错过的第一个频率时间立刻开始执行</option>
                         <option value="1">以当前时间为触发频率立刻触发一次执行</option>
                         <option value="2">不触发立即执行</option>
                     </select><br/>
@@ -94,14 +94,14 @@
                     <input id="jobDescription" type="text" class="form-control">
                     <label>触发器描述:</label>
                     <input id="triggerDescription" type="text" class="form-control">
-                    <label>立即启动:</label>
+               <!--     <label id="startNowLabel">立即启动:</label>
                     <select id="startNow" class="selectpicker">
                         <option value="true">是</option>
                         <option value="false">否</option>
-                    </select>
+                    </select>-->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="addJob()">保存</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary" onclick="addJob()">保存</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
@@ -153,7 +153,7 @@
                             "        <td>" + result['jobDescription'] + "</td>" +
                             "        <td>" +
                             "                    <div>\n" +
-                            "                        <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#jobModal\" onclick=\"load('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">编辑</button>\n" +
+                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"load('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">编辑</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"delConfirm('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">删除</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"pauseJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">暂停</button>\n" +
                             "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"resumeJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">恢复</button>\n" +
@@ -171,6 +171,20 @@
         })
     });
 
+    /* 显示jobModal*/
+    function showJobModal() {
+        $('#myModalLabel').html("新增");
+/*        $('#triggerName').show();
+        $('#triggerGroupName').show();
+        $("#triggerNameLabel").show();
+        $("#triggerGroupNameLabel").show();
+        $("#startNowLabel").show();
+        $("#startNow").show();*/
+        $('.modal-body input').val("");
+        $('#saveBtn').attr("onclick","addJob()");
+        $('#jobModal').modal();
+    }
+
     /*添加job*/
     function addJob() {
         $.ajax({
@@ -181,6 +195,7 @@
             data: JSON.stringify(jobJson()),
             success: function (result) {
                 console.log(result);
+                $('.modal-body input').val("");
                 $('#jobModal').modal('hide');
                 alert(result.message);
                 if (result.status == "ok") {
@@ -188,6 +203,32 @@
                 }
             },
             error: function () {
+                $('.modal-body input').val("");
+                $('#jobModal').modal('hide');
+                alert("系统异常！");
+            }
+        });
+    }
+
+    /*更新job*/
+    function updateJob() {
+        $.ajax({
+            type: "PUT",
+            dataType: "json",
+            url: "/api/v1/update",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(jobJson()),
+            success: function (result) {
+                console.log(result);
+                $('.modal-body input').val("");
+                $('#jobModal').modal('hide');
+                alert(result.message);
+                if (result.status == "ok") {
+                    location.reload();
+                }
+            },
+            error: function () {
+                $('.modal-body input').val("");
                 $('#jobModal').modal('hide');
                 alert("系统异常！");
             }
@@ -284,28 +325,42 @@
 
     /*加载job详情*/
     function load(job, jobGroup) {
+        $('#jobModal').modal();
         $.ajax({
             type: "GET",
             dataType: "json",
             url: "/api/v1/load/job/" + job + "/group/" + jobGroup,
             success: function (result) {
-               if(result.status == "ok") {
-                   $('#myModalLabel').val("编辑");
-                   $('#jobName').val(result.data.jobName);
-                   $('#jobGroupName').val(result.data.jobGroupName);
-                   $('#cron').val(result.data.cron);
-
-                   $('#priority').val(result.data.priority);
-                   $('#misfire').val(result.data.misfire);
-                   $('#applicationId').val(result.data.applicationId);
-                   $('#uri').val(result.data.uri);
-                   $('#url').val(result.data.url);
-                   $('#jobDescription').val(result.data.jobDescription);
-                   $('#triggerDescription').val(result.data.triggerDescription);
-                   $('#triggerName').remove();
-               } else {
-                   alert("Warn:" + result.message);
-               }
+                if (result.status == "ok") {
+                    $('#myModalLabel').html("编辑");
+                    $('#jobName').val(result.data.jobName);
+                    $('#jobGroupName').val(result.data.jobGroupName);
+                    $('#triggerName').val(result.data.triggerName);
+                    $('#triggerGroupName').val(result.data.triggerGroupName);
+                    $('#cron').val(result.data.cron);
+                    $('#priority').val(result.data.priority);
+                    if (result.data.misfire == -1) {
+                        $("#misfire").find("option[text='以错过的第一个频率时间立刻开始执行']").attr("selected", true);
+                    } else if (result.data.misfire == 1) {
+                        $("#misfire").find("option[text='以当前时间为触发频率立刻触发一次执行']").attr("selected", true);
+                    } else {
+                        $("#misfire").find("option[text='不触发立即执行']").attr("selected", true);
+                    }
+                    $('#applicationId').val(result.data.applicationId);
+                    $('#uri').val(result.data.uri);
+                    $('#url').val(result.data.url);
+                    $('#jobDescription').val(result.data.jobDescription);
+                    $('#triggerDescription').val(result.data.triggerDescription);
+                    $('#saveBtn').attr("onclick","updateJob()");
+/*                    $('#triggerName').hide();
+                    $('#triggerGroupName').hide();
+                    $("#triggerNameLabel").hide();
+                    $("#triggerGroupNameLabel").hide();
+                    $("#startNowLabel").hide();
+                    $("#startNow").hide();*/
+                } else {
+                    alert("Warn:" + result.message);
+                }
             },
             error: function () {
                 alert("系统异常！");
@@ -328,8 +383,8 @@
             "uri": $("#uri").val(),
             "url": $("#url").val(),
             "jobDescription": $("#jobDescription").val(),
-            "triggerDescription": $("#triggerDescription").val(),
-            "startNow": $("#startNow").val()
+            "triggerDescription": $("#triggerDescription").val()
+            // "startNow": $("#startNow").val()
         };
         return json;
     }
