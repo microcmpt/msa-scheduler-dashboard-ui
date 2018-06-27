@@ -181,6 +181,8 @@
         $("#startNowLabel").show();
         $("#startNow").show();*/
         $('.modal-body input').val("");
+        $('#priority').val("5");
+        $('#misfire').val("-1");
         $('#saveBtn').attr("onclick","addJob()");
         $('#jobModal').modal();
     }
@@ -340,11 +342,11 @@
                     $('#cron').val(result.data.cron);
                     $('#priority').val(result.data.priority);
                     if (result.data.misfire == -1) {
-                        $("#misfire").find("option[text='以错过的第一个频率时间立刻开始执行']").attr("selected", true);
+                        $('#misfire').val("-1");
                     } else if (result.data.misfire == 1) {
-                        $("#misfire").find("option[text='以当前时间为触发频率立刻触发一次执行']").attr("selected", true);
+                        $('#misfire').val("1");
                     } else {
-                        $("#misfire").find("option[text='不触发立即执行']").attr("selected", true);
+                        $('#misfire').val("2");
                     }
                     $('#applicationId').val(result.data.applicationId);
                     $('#uri').val(result.data.uri);
