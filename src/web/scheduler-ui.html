@@ -2,6 +2,7 @@
 <head>
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/webjars/bootstrap-paginator/src/bootstrap-paginator.js"></script>
     <title>Scheduler任务调度中心控制台</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -37,10 +38,7 @@
             </tbody>
         </table>
 
-        <ul class="pager">
-            <li><a href="#">Previous</a></li>
-            <li><a href="#">Next</a></li>
-        </ul>
+        <ul class="pagination"  id="page"></ul>
     </div>
 </div>
 
@@ -135,11 +133,17 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        getJobs();
+    });
+
+    /* 获取所有job*/
+    function getJobs() {
         $.ajax({
             type: "get",
-            url: "/api/v1/jobs",
+            url: "/api/v1/jobs/1",
             dataType: "json",
             success: function (data) {
+                $('.table-striped').html("");
                 var item;
                 $.each(data.data, function (i, result) {
                         item = "<tr>" +
@@ -164,12 +168,74 @@
                         $('.table-striped').append(item);
                     }
                 );
+                var pages = data.pages;
+                var currentPage = data.currentPage;
+
+                var options = {
+                    currentPage: currentPage,
+                    totalPages: pages,
+                    numberOfPages:20,
+                    bootstrapMajorVersion:3,
+                    itemTexts: function (type, page, current) {
+                        switch (type) {
+                            case "first":
+                                return "首页";
+                            case "prev":
+                                return "上一页";
+                            case "next":
+                                return "下一页";
+                            case "last":
+                                return "末页";
+                            case "page":
+                                return page;
+                        }
+                    },
+                    onPageClicked: function(event, originalEvent, type, page){
+                        $.ajax({
+                            url: "/api/v1/jobs/" + page,
+                            type: "get",
+                            dataType: "json",
+                            success: function (data1) {
+                                $('.table-striped').html("");
+                                var item;
+                                $.each(data1.data, function (i, result) {
+                                        item = "<tr>" +
+                                            "        <td>" + result['jobName'] + "</td>" +
+                                            "        <td>" + result['jobGroupName'] + "</td>" +
+                                            "        <td>" + result['applicationId'] + "</td>" +
+                                            "        <td>" + result['uri'] + "</td>" +
+                                            "        <td>" + result['url'] + "</td>" +
+                                            "        <td>" + result['state'] + "</td>" +
+                                            "        <td>" + result['cron'] + "</td>" +
+                                            "        <td>" + result['jobDescription'] + "</td>" +
+                                            "        <td>" +
+                                            "                    <div>\n" +
+                                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"load('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">编辑</button>\n" +
+                                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"delConfirm('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">删除</button>\n" +
+                                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"pauseJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">暂停</button>\n" +
+                                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"resumeJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">恢复</button>\n" +
+                                            "                        <button type=\"button\" class=\"btn btn-primary\" onclick=\"startJob('" + result['jobName'] + "'," + "'" + result['jobGroupName'] + "')" + "\">立即启动</button>\n" +
+                                            "                    </div>\n" +
+                                            "        </td>" +
+                                            " </tr>";
+                                        $('.table-striped').append(item);
+                                    }
+                                );
+                            },
+                            error: function () {
+                                alert('系统异常')
+                            }
+                        });
+
+                    }
+                };
+                $('#page').bootstrapPaginator(options);
             },
             error: function () {
                 alert('系统异常')
             }
-        })
-    });
+        });
+    }
 
     /* 显示jobModal*/
     function showJobModal() {
