@@ -247,6 +247,10 @@
         $("#startNowLabel").show();
         $("#startNow").show();*/
         $('.modal-body input').val("");
+        $("#jobName").removeAttr("disabled");
+        $("#jobGroupName").removeAttr("disabled");
+        $("#triggerName").removeAttr("disabled");
+        $("#triggerGroupName").removeAttr("disabled");
         $('#priority').val("5");
         $('#misfire').val("-1");
         $('#saveBtn').attr("onclick","addJob()");
@@ -405,6 +409,10 @@
                     $('#jobGroupName').val(result.data.jobGroupName);
                     $('#triggerName').val(result.data.triggerName);
                     $('#triggerGroupName').val(result.data.triggerGroupName);
+                    $("#jobName").attr("disabled","disabled");
+                    $("#jobGroupName").attr("disabled","disabled");
+                    $("#triggerName").attr("disabled","disabled");
+                    $("#triggerGroupName").attr("disabled","disabled");
                     $('#cron').val(result.data.cron);
                     $('#priority').val(result.data.priority);
                     if (result.data.misfire == -1) {
