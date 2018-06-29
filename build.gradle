@@ -1,14 +1,14 @@
 group 'com.github.microcmpt'
-version '1.0.1'
+version '1.0.2'
 
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-//signing {
-//    required { gradle.taskGraph.hasTask("uploadArchives") }
-//    sign configurations.archives
-//}
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
 
 
 sourceCompatibility = 1.8
