@@ -6,6 +6,7 @@
     <title>Scheduler任务调度中心控制台</title>
     <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <div class="container"><br/>
@@ -53,15 +54,15 @@
             <form role="form">
                 <div class="modal-body">
                     <label>任务:</label>
-                    <input id="jobName" type="text" class="form-control">
+                    <input id="jobName" type="text" class="form-control" required>
                     <label>任务组:</label>
-                    <input id="jobGroupName" type="text" class="form-control">
+                    <input id="jobGroupName" type="text" class="form-control" required>
                     <label id="triggerNameLabel">触发器:</label>
-                    <input id="triggerName" type="text" class="form-control">
+                    <input id="triggerName" type="text" class="form-control" required>
                     <label id="triggerGroupNameLabel">触发器组:</label>
-                    <input id="triggerGroupName" type="text" class="form-control">
+                    <input id="triggerGroupName" type="text" class="form-control" required>
                     <label>执行频率:</label>
-                    <input id="cron" type="text" class="form-control">
+                    <input id="cron" type="text" class="form-control" required>
                     <label>优先级:</label>
                     <select id="priority" class="selectpicker">
                         <option value="5">5</option>
